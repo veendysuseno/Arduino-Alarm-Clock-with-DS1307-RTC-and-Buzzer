@@ -21,17 +21,17 @@ This project implements a simple alarm clock using an Arduino, a DS1307 real-tim
 
 ## Wiring Diagram
 
-| Component           | Arduino Pin  |
-|---------------------|--------------|
-| LCD RS              | 2            |
-| LCD Enable          | 3            |
-| LCD D4              | 4            |
-| LCD D5              | 5            |
-| LCD D6              | 6            |
-| LCD D7              | 7            |
-| Buzzer              | 10           |
-| DS1307 SDA          | A4 (I2C)     |
-| DS1307 SCL          | A5 (I2C)     |
+| Component  | Arduino Pin |
+| ---------- | ----------- |
+| LCD RS     | 2           |
+| LCD Enable | 3           |
+| LCD D4     | 4           |
+| LCD D5     | 5           |
+| LCD D6     | 6           |
+| LCD D7     | 7           |
+| Buzzer     | 10          |
+| DS1307 SDA | A4 (I2C)    |
+| DS1307 SCL | A5 (I2C)    |
 
 ## Code
 
@@ -44,7 +44,7 @@ This project implements a simple alarm clock using an Arduino, a DS1307 real-tim
 
 #define buzzer 10
 #include <Wire.h>
-#include <DS1307.h> 
+#include <DS1307.h>
 #include <LiquidCrystal.h>
 
 // Initialize the LCD (RS, E, D4, D5, D6, D7)
@@ -78,14 +78,14 @@ void loop() {
   lcd.print(RTC.get(DS1307_MIN, false));  // Read minutes without updating
   lcd.print(":");
   lcd.print(RTC.get(DS1307_SEC, false));  // Read seconds
-  
+
   jam = RTC.get(DS1307_HR, true);
   menit = RTC.get(DS1307_MIN, false);
 
   // Check if the current time matches the alarm time (3:15)
   if ((jam == 3) && (menit == 15)) {
     digitalWrite(buzzer, HIGH);  // Turn on the buzzer
-  } 
+  }
   // Turn off the buzzer at 3:20
   else if ((jam == 3) && (menit == 20)) {
     digitalWrite(buzzer, LOW);  // Turn off the buzzer
@@ -95,3 +95,21 @@ void loop() {
 }
 ```
 
+## How It Works
+
+1. Real-Time Clock (RTC): The DS1307 module keeps track of the current time. It is set up during the initial run, but once set, it maintains the time even if the Arduino is powered off.
+2. LCD Display: The current time (hours, minutes, and seconds) is displayed on a 16x2 LCD screen.
+3. Alarm Logic: The alarm is set to trigger at 3:15 AM. When the time reaches this point, the buzzer turns on. The buzzer turns off at 3:20 AM.
+4. Buzzer Control: The buzzer connected to pin 10 will activate based on the alarm time conditions.
+
+## Setup Instructions
+
+1. Wiring: Connect the LCD, DS1307, and buzzer as per the wiring diagram.
+2. Upload Code: Upload the provided code to your Arduino using the Arduino IDE.
+3. Alarm Function: Once the code is running, the LCD will display the current time. The alarm will trigger at the specified time (3:15 AM).
+
+## Applications
+
+1. A basic alarm clock for various uses.
+2. Demonstration of how to use an RTC module and control external devices based on time.
+3. Educational tool for understanding time-based events in microcontroller projects.
